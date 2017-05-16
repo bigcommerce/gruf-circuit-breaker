@@ -52,9 +52,11 @@ module Gruf
          .with_error_handler do |error, handle|
           if error.is_a?(GRPC::BadStatus)
             # only special handling for GRPC error statuses. We want to pass-through any normal exceptions
-            raise error if failure_statuses.include?(error.class)
+            raise error unless failure_statuses.include?(error.class)
+            handle.call(error)
+          else
+            raise error
           end
-          handle.call(error)
         end
         light.with_threshold(options.fetch(:threshold, 1)) if options.fetch(:threshold, false)
         light.run
@@ -66,7 +68,7 @@ module Gruf
       # @return [String]
       #
       def method_key(call_signature)
-        "#{service_key}.#{call_signature}"
+        "#{service_key}.#{call_signature.to_s.gsub('_without_intercept', '')}"
       end
 
       ##
