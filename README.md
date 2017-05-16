@@ -1,5 +1,7 @@
 # gruf-circuit-breaker - Circuit Breaker for gruf
 
+[![Build Status](https://travis-ci.com/bigcommerce/gruf-circuit-breaker.svg?token=D3Cc4LCF9BgpUx4dpPpv&branch=master)](https://travis-ci.com/bigcommerce/gruf-circuit-breaker)
+
 Adds circuit breaker support for [gruf](https://github.com/bigcommerce/gruf) 0.12.0 or later.
 
 This uses the wonderful [stoplight](https://github.com/orgsync/stoplight) gem for handling
