@@ -1,8 +1,10 @@
 language: ruby
 cache:
   bundler: true
+sudo: false
+dist: trusty
 rvm:
-  - 2.2.5
+  - 2.2
 before_install: gem install bundler -v 1.11.2
 matrix:
   fast_finish: true
