@@ -28,6 +28,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 source 'https://rubygems.org'
 
-gem 'gruf', git: 'git@github.com:bigcommerce/gruf', tag: 'v0.11.5'
+gem 'gruf', git: 'git@github.com:bigcommerce/gruf', tag: 'v0.14.1'
 
 gemspec

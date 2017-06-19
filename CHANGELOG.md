@@ -1,5 +1,9 @@
 Changelog for the gruf-circuit-breaker gem.
 
+h3. 0.1.2
+
+- Updated to MIT license
+
 h3. 0.1.1
 
 - Fix to grpc error catching
