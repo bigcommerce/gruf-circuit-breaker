@@ -15,6 +15,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require_relative 'simplecov_helper'
 require 'pry'
 require 'gruf'
 require 'gruf/circuit_breaker'

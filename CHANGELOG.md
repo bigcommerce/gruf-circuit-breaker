@@ -1,5 +1,11 @@
 Changelog for the gruf-circuit-breaker gem.
 
+h3. 0.1.3
+
+- Add rubocop to test suite
+- Add bundler-audit to test suite
+- Various cleanups to pass rubocop suite
+
 h3. 0.1.2
 
 - Updated to MIT license

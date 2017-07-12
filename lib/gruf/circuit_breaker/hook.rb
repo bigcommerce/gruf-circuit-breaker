@@ -34,17 +34,16 @@ module Gruf
       # @param [GRPC::ActiveCall] active_call
       #
       def around(call_signature, request, active_call, &block)
-        light = Stoplight(method_key(call_signature)) {
+        light = Stoplight(method_key(call_signature)) do
           block.call(call_signature, request, active_call)
-        }.with_cool_off_time(options.fetch(:cool_off_time, 60))
-         .with_error_handler do |error, handle|
-          if error.is_a?(GRPC::BadStatus)
-            # only special handling for GRPC error statuses. We want to pass-through any normal exceptions
-            raise error unless failure_statuses.include?(error.class)
-            handle.call(error)
-          else
-            raise error
-          end
+        end
+        light.with_cool_off_time(options.fetch(:cool_off_time, 60))
+        light.with_error_handler do |error, handle|
+          # if it's not a gRPC::BadStatus, pass it through
+          raise error unless error.is_a?(GRPC::BadStatus)
+          # only special handling for GRPC error statuses. We want to pass-through any normal exceptions
+          raise error unless failure_statuses.include?(error.class)
+          handle.call(error)
         end
         light.with_threshold(options.fetch(:threshold, 1)) if options.fetch(:threshold, false)
         light.run
@@ -63,7 +62,7 @@ module Gruf
       # @return [String]
       #
       def service_key
-        service.class.name.underscore.gsub('/','.')
+        service.class.name.underscore.tr('/', '.')
       end
 
       ##
@@ -82,4 +81,3 @@ module Gruf
     end
   end
 end
-

@@ -14,11 +14,19 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-require 'stoplight'
-require_relative 'circuit_breaker/version'
-require_relative 'circuit_breaker/hook'
+require 'simplecov'
+require 'fileutils'
 
-module Gruf
-  module CircuitBreaker
-  end
+if File.directory?('./coverage/')
+  coverage_path = File.realpath('./coverage/')
+  FileUtils.rm_rf(coverage_path)
+end
+
+SimpleCov.command_name 'Unit Tests'
+SimpleCov.minimum_coverage 75
+SimpleCov.start do
+  add_filter '/bin/'
+  add_filter '/coverage/'
+  add_filter '/spec/'
+  add_filter '/vendor/'
 end
