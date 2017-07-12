@@ -1,8 +1,8 @@
 # gruf-circuit-breaker - Circuit Breaker for gruf
 
-[![Build Status](https://travis-ci.com/bigcommerce/gruf-circuit-breaker.svg?token=D3Cc4LCF9BgpUx4dpPpv&branch=master)](https://travis-ci.com/bigcommerce/gruf-circuit-breaker)
+[![Build Status](https://travis-ci.org/bigcommerce/gruf-circuit-breaker.svg?branch=master)](https://travis-ci.org/bigcommerce/gruf-circuit-breaker)
 
-Adds circuit breaker support for [gruf](https://github.com/bigcommerce/gruf) 0.14.1 or later.
+Adds circuit breaker support for [gruf](https://github.com/bigcommerce/gruf) 1.0.0 or later.
 
 This uses the wonderful [stoplight](https://github.com/orgsync/stoplight) gem for handling
 the internals of circuit breaking.
@@ -26,17 +26,15 @@ You can further customize the tracing of gruf services via the configuration:
 
 ```ruby
 Gruf.configure do |c|
-  c.hook_options = {
-    circuit_breaker: {
-      # set cool-off time in seconds (defaults to 60)
-      cool_off_time: 15, 
-      # set threshold count to 2
-      threshold: 2, 
-      # set the gRPC failure statuses that will cause a circuit to trip 
-      failure_statuses: [GRPC::Internal, GRPC::Unknown, GRPC::Aborted],
-      # use a redis instance for the stoplight data storage
-      redis: Redis.new
-    }
+  c.hook_options[:circuit_breaker] = {
+    # set cool-off time in seconds (defaults to 60)
+    cool_off_time: 15, 
+    # set threshold count to 2
+    threshold: 2, 
+    # set the gRPC failure statuses that will cause a circuit to trip 
+    failure_statuses: [GRPC::Internal, GRPC::Unknown, GRPC::Aborted],
+    # use a redis instance for the stoplight data storage
+    redis: Redis.new
   }
 end
 ```
