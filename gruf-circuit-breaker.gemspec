@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Plugin for implementing the circuit breaker pattern for gruf gRPC requests}
   spec.description   = spec.summary
   spec.homepage      = 'https://github.com/bigcommerce/gruf-circuit-breaker'
+  spec.license       = 'MIT'
 
   spec.files         = Dir['README.md', 'CHANGELOG.md', 'CODE_OF_CONDUCT.md', 'lib/**/*', 'gruf-circuit-breaker.gemspec']
   spec.require_paths = ['lib']
@@ -33,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.11'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.6'
-  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'pry', '~> 0'
 
   spec.add_runtime_dependency 'stoplight', '~> 2.1'
 end
