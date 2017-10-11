@@ -1,4 +1,3 @@
-# coding: utf-8
 # Copyright (c) 2017-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -16,6 +15,6 @@
 #
 module Gruf
   module CircuitBreaker
-    VERSION = '0.1.3'.freeze
+    VERSION = '1.0.0'.freeze
   end
 end

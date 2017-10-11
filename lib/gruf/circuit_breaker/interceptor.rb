@@ -1,4 +1,3 @@
-# coding: utf-8
 # Copyright (c) 2017-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -16,26 +15,25 @@
 #
 module Gruf
   module CircuitBreaker
-    class Hook < Gruf::Hooks::Base
-
+    ##
+    # Intercepts gruf requests and adds a circuit breaker implementation
+    #
+    class Interceptor < Gruf::Interceptors::ServerInterceptor
       ##
       # Sets up the stoplight gem
       #
-      def setup
+      def initialize(request, error, options = {})
         redis = options.fetch(:redis, nil)
         Stoplight::Light.default_data_store = Stoplight::DataStore::Redis.new(redis) if redis && redis.is_a?(Redis)
+        super(request, error, options)
       end
 
       ##
       # Handle the gruf around hook
       #
-      # @param [Symbol] call_signature
-      # @param [Object] request
-      # @param [GRPC::ActiveCall] active_call
-      #
-      def around(call_signature, request, active_call, &block)
-        light = Stoplight(method_key(call_signature)) do
-          block.call(call_signature, request, active_call)
+      def call
+        light = Stoplight(request.method_key) do
+          yield
         end
         light.with_cool_off_time(options.fetch(:cool_off_time, 60))
         light.with_error_handler do |error, handle|
@@ -45,24 +43,17 @@ module Gruf
           raise error unless failure_statuses.include?(error.class)
           handle.call(error)
         end
-        light.with_threshold(options.fetch(:threshold, 1)) if options.fetch(:threshold, false)
+        light.with_threshold(threshold) if threshold > 0
         light.run
       end
 
       private
 
       ##
-      # @return [String]
+      # @return [Integer]
       #
-      def method_key(call_signature)
-        "#{service_key}.#{call_signature.to_s.gsub('_without_intercept', '')}"
-      end
-
-      ##
-      # @return [String]
-      #
-      def service_key
-        service.class.name.underscore.tr('/', '.')
+      def threshold
+        options.fetch(:threshold, 0).to_i
       end
 
       ##
@@ -70,13 +61,6 @@ module Gruf
       #
       def failure_statuses
         options.fetch(:failure_statuses, [GRPC::Internal, GRPC::Unknown])
-      end
-
-      ##
-      # @return [Hash]
-      #
-      def options
-        @options.fetch(:circuit_breaker, {})
       end
     end
   end

@@ -1,5 +1,9 @@
 Changelog for the gruf-circuit-breaker gem.
 
+h3. 1.0.0
+
+- gruf 2.0 support
+
 h3. 0.1.3
 
 - Add rubocop to test suite

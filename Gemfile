@@ -28,11 +28,11 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 source 'https://rubygems.org'
 
-gem 'gruf', '1.1.0'
+gem 'gruf', '2.0.1'
 
 group :development do
   gem 'bundler-audit'
-  gem 'rubocop', '~> 0.49.1'
+  gem 'rubocop'
   gem 'simplecov', require: false
 end
 

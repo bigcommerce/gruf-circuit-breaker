@@ -20,7 +20,13 @@ class ThingService; end
 module Gruf
   module CircuitBreaker
     module SpecHelpers
+      def grpc_active_call(metadata: {}, output_metadata: {})
+        double(:active_call, metadata: metadata, output_metadata: output_metadata)
+      end
 
+      def grpc_request
+        ThingRequest.new
+      end
     end
   end
 end

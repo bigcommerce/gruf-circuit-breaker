@@ -16,32 +16,30 @@
 #
 require 'spec_helper'
 
-describe Gruf::CircuitBreaker::Hook do
+describe Gruf::CircuitBreaker::Interceptor do
   let(:service) { ThingService.new }
   let(:options) { {} }
   let(:signature) { 'get_thing' }
-  let(:hook) { described_class.new(service, { circuit_breaker: options }) }
-
-  describe '.options' do
-    let(:options) { { abc: 'def' } }
-    subject { hook.send(:options) }
-
-    it 'should return circuit_breaker options' do
-      expect(subject).to eq options
-    end
+  let(:active_call) { grpc_active_call }
+  let(:request) do
+    double(
+        :request,
+        method_key: signature,
+        service: ThingService,
+        rpc_desc: nil,
+        active_call: active_call,
+        message: grpc_request
+    )
   end
+  let(:errors) { Gruf::Error.new }
+  let(:interceptor) { described_class.new(request, errors, options) }
 
-  describe '.service_key' do
-    subject { hook.send(:service_key) }
-    it 'should be the translated service class name' do
-      expect(subject).to eq 'thing_service'
-    end
-  end
+  describe '#call' do
+    subject { interceptor.call { true } }
 
-  describe '.method_key' do
-    subject { hook.send(:method_key, signature) }
-    it 'should return the service key and the method signature concatenated by a .' do
-      expect(subject).to eq 'thing_service.get_thing'
+    it 'should measure with stoplight' do
+      expect_any_instance_of(Stoplight::Light).to receive(:run).and_call_original
+      expect { |b| interceptor.call(&b) }.to yield_control
     end
   end
 end

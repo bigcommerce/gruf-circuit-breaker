@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/bigcommerce/gruf-circuit-breaker.svg?branch=master)](https://travis-ci.org/bigcommerce/gruf-circuit-breaker) [![Gem Version](https://badge.fury.io/rb/gruf-circuit-breaker.svg)](https://badge.fury.io/rb/gruf-circuit-breaker) [![Inline docs](http://inch-ci.org/github/bigcommerce/gruf-circuit-breaker.svg?branch=master)](http://inch-ci.org/github/bigcommerce/gruf-circuit-breaker) 
 
-Adds circuit breaker support for [gruf](https://github.com/bigcommerce/gruf) 1.0.0 or later.
+Adds circuit breaker support for [gruf](https://github.com/bigcommerce/gruf) 2.0.0 or later.
 
 This uses the wonderful [stoplight](https://github.com/orgsync/stoplight) gem for handling
 the internals of circuit breaking.
@@ -26,7 +26,7 @@ You can further customize the tracing of gruf services via the configuration:
 
 ```ruby
 Gruf.configure do |c|
-  c.hook_options[:circuit_breaker] = {
+  c.interceptors.use(Gruf::CircuitBreaker::Interceptor, { 
     # set cool-off time in seconds (defaults to 60)
     cool_off_time: 15, 
     # set threshold count to 2
@@ -35,7 +35,7 @@ Gruf.configure do |c|
     failure_statuses: [GRPC::Internal, GRPC::Unknown, GRPC::Aborted],
     # use a redis instance for the stoplight data storage
     redis: Redis.new
-  }
+  })
 end
 ```
 
