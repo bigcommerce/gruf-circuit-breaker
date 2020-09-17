@@ -1,6 +1,6 @@
 # gruf-circuit-breaker - Circuit Breaker for gruf
 
-[![CircleCI](https://circleci.com/gh/bigcommerce/gruf-circuit-breaker/tree/master.svg?style=svg)](https://circleci.com/gh/bigcommerce/gruf-circuit-breaker/tree/master) [![Gem Version](https://badge.fury.io/rb/gruf-circuit-breaker.svg)](https://badge.fury.io/rb/gruf-circuit-breaker) [![Inline docs](http://inch-ci.org/github/bigcommerce/gruf-circuit-breaker.svg?branch=master)](http://inch-ci.org/github/bigcommerce/gruf-circuit-breaker) 
+[![CircleCI](https://circleci.com/gh/bigcommerce/gruf-circuit-breaker/tree/main.svg?style=svg)](https://circleci.com/gh/bigcommerce/gruf-circuit-breaker/tree/main) [![Gem Version](https://badge.fury.io/rb/gruf-circuit-breaker.svg)](https://badge.fury.io/rb/gruf-circuit-breaker) [![Inline docs](http://inch-ci.org/github/bigcommerce/gruf-circuit-breaker.svg?branch=main)](http://inch-ci.org/github/bigcommerce/gruf-circuit-breaker) 
 
 Adds circuit breaker support for [gruf](https://github.com/bigcommerce/gruf) 2.0.0 or later.
 

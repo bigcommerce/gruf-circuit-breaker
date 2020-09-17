@@ -1,4 +1,6 @@
-# Copyright 2017, Bigcommerce Inc.
+# frozen_string_literal: true
+
+# Copyright 2017-present, Bigcommerce Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without

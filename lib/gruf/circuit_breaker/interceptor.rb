@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2017-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -19,12 +21,14 @@ module Gruf
     # Intercepts gruf requests and adds a circuit breaker implementation
     #
     class Interceptor < Gruf::Interceptors::ServerInterceptor
+      DEFAULT_FAILURE_STATUSES = [GRPC::Internal, GRPC::Unknown].freeze
+
       ##
       # Sets up the stoplight gem
       #
       def initialize(request, error, options = {})
         redis = options.fetch(:redis, nil)
-        Stoplight::Light.default_data_store = Stoplight::DataStore::Redis.new(redis) if redis && redis.is_a?(Redis)
+        Stoplight::Light.default_data_store = Stoplight::DataStore::Redis.new(redis) if redis.is_a?(Redis)
         super(request, error, options)
       end
 
@@ -39,11 +43,13 @@ module Gruf
         light.with_error_handler do |error, handle|
           # if it's not a gRPC::BadStatus, pass it through
           raise error unless error.is_a?(GRPC::BadStatus)
+
           # only special handling for GRPC error statuses. We want to pass-through any normal exceptions
           raise error unless failure_statuses.include?(error.class)
+
           handle.call(error)
         end
-        light.with_threshold(threshold) if threshold > 0
+        light.with_threshold(threshold) if threshold.to_i.positive?
         light.run
       end
 
@@ -60,7 +66,7 @@ module Gruf
       # @return [Array<Class>]
       #
       def failure_statuses
-        options.fetch(:failure_statuses, [GRPC::Internal, GRPC::Unknown])
+        options.fetch(:failure_statuses, DEFAULT_FAILURE_STATUSES)
       end
     end
   end
