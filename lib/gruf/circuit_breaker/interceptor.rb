@@ -28,7 +28,7 @@ module Gruf
       #
       def initialize(request, error, options = {})
         redis = options.fetch(:redis, nil)
-        Stoplight::Light.default_data_store = Stoplight::DataStore::Redis.new(redis) if redis.is_a?(Redis)
+        ::Stoplight::Light.default_data_store = ::Stoplight::DataStore::Redis.new(redis) if defined?(::Redis) && redis.is_a?(::Redis)
         super(request, error, options)
       end
 
